@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="OS-Omni homepage for benchmarking generalist computer-using agents on long-horizon workflows across platforms.">
+  <meta name="keywords" content="OS-Omni, computer-using agents, GUI agents, benchmark, VLM, cross-platform, long-horizon workflows">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OS-Omni</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg" type="image/svg+xml">
+</head>
+
+<body>
+  <nav class="navbar os-topnav" role="navigation" aria-label="main navigation">
+    <div class="navbar-menu is-active">
+      <div class="navbar-start">
+        <a class="navbar-item" href="#overview">Overview</a>
+        <a class="navbar-item" href="#benchmark">Benchmark</a>
+        <a class="navbar-item" href="#results">Results</a>
+        <a class="navbar-item" href="#examples">Examples</a>
+        <a class="navbar-item" href="#BibTeX">BibTeX</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero os-hero" id="overview">
+    <div class="hero-body">
+      <div class="container is-max-desktop has-text-centered">
+        <h1 class="title publication-title">OS-Omni</h1>
+        <h2 class="subtitle publication-subtitle">
+          Benchmarking Generalist Computer-Using Agents on Long-Horizon Workflows Across Platforms
+        </h2>
+        <div class="is-size-5 publication-authors">
+          <button class="author-toggle" type="button" aria-haspopup="dialog" aria-controls="author-modal">
+            Authors
+          </button>
+        </div>
+
+        <div class="publication-links">
+          <span class="link-block">
+            <a href="./static/os-omni.pdf" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fas fa-file-pdf"></i></span>
+              <span>Paper</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://anonymous.4open.science/r/NeurIPS_2026_OS_Omni-5D21/README.md" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>Code</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://anonymous.4open.science/r/NeurIPS_2026_OS_Omni-5D21/README.md" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fas fa-database"></i></span>
+              <span>Data</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon"><i class="fas fa-quote-right"></i></span>
+              <span>BibTeX</span>
+            </a>
+          </span>
+        </div>
+
+        <div class="platform-strip" aria-label="Supported platforms">
+          <a href="#case-windows"><img src="./static/images/icons/windows.png" alt="">Windows</a>
+          <a href="#case-ubuntu"><img src="./static/images/icons/linux.png" alt="">Ubuntu</a>
+          <a href="#case-macos"><img src="./static/images/icons/mac.png" alt="">macOS</a>
+          <a href="#case-android"><img src="./static/images/icons/android.png" alt="">Android</a>
+          <a href="#case-ios"><img src="./static/images/icons/mac.png" alt="">iOS</a>
+          <span class="is-disabled"><img src="./static/images/icons/chrome.png" alt="">Web</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="author-modal" id="author-modal" role="dialog" aria-modal="true" aria-labelledby="author-modal-title" hidden>
+    <div class="author-modal-backdrop" data-close-authors></div>
+    <div class="author-modal-panel">
+      <button class="author-modal-close" type="button" aria-label="Close author list" data-close-authors>
+        <i class="fas fa-xmark"></i>
+      </button>
+      <h2 id="author-modal-title">Authors</h2>
+      <p class="author-modal-note"><sup>*</sup> Equal contribution</p>
+      <div class="author-list">
+        <span>Hui Shen<sup>*</sup></span>
+        <span>Yunta Hsieh<sup>*</sup></span>
+        <span>Jianing Ma<sup>*</sup></span>
+        <span>Ziyuan Liu<sup>*</sup></span>
+        <span>Qi Han<sup>*</sup></span>
+        <span>Xiuqi Xu<sup>*</sup></span>
+        <span>Yanheng Shang<sup>*</sup></span>
+        <br>
+        <span>Chenqi Yin</span>
+        <span>Zesen Zhao</span>
+        <span>Boyuan Zheng</span>
+        <span>Jisen Li</span>
+        <span>Xiaoxia Wu</span>
+        <span>Ruoyan Zhang</span>
+        <span>Dongfu Jiang</span>
+        <span>Ruiyao Liu</span>
+        <span>Jing Xiong</span>
+        <span>He Xiao</span>
+        <span>Nan Zheng</span>
+        <span>Hangxiang Chen</span>
+        <span>Shengyang Tao</span>
+        <span>Deyang Luorong</span>
+        <span>Jingxuan Zhang</span>
+        <span>Chaofan Tao</span>
+        <span>Yuren Wang</span>
+        <span>Jiaqi Mo</span>
+        <span>Hei Ting Una Chan</span>
+        <span>Sicheng Chen</span>
+        <span>Kai Zhang</span>
+        <span>Mengkang Hu</span>
+        <span>Zhongwei Wan</span>
+        <span>Xin Wang</span>
+        <span>Chuanyang Zheng</span>
+        <span>Ziheng Zhang</span>
+        <span>Hengyuan Zhang</span>
+        <span>Zunhai Su</span>
+        <span>Kanzhi Cheng</span>
+        <span>Jiawei Lu</span>
+        <span>Yifan Zhang</span>
+        <span>Shen Yan</span>
+        <span>Ben Athiwaratkun</span>
+        <span>Qiushi Sun</span>
+        <span>Mi Zhang</span>
+        <span>Ping Luo</span>
+        <span>Wenhu Chen</span>
+        <span>Ngai Wong</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="section demo-video-section" aria-label="OS-Omni demo video">
+    <div class="container is-max-desktop">
+      <div class="demo-video-frame">
+        <video controls muted loop autoplay playsinline width="100%" preload="metadata">
+          <source src="./main.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-widescreen has-text-centered">
+      <figure class="wide-figure">
+        <img src="./static/images/overview.png" alt="OS-Omni overview">
+      </figure>
+      <p class="teaser-caption">
+        OS-Omni provides a unified executable environment for evaluating multimodal computer-using agents across desktop,
+        mobile, web, and cross-platform workflows.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Computer-using agents are increasingly expected to complete realistic user goals rather than isolated GUI
+              actions. However, existing evaluations are fragmented across web, mobile, and desktop settings, making it
+              difficult to measure whether the same agent can sustain long-horizon workflows across heterogeneous
+              software platforms while preserving final-state correctness.
+            </p>
+            <p>
+              We introduce <b>OS-Omni</b>, a 1,200-task cross-platform benchmark and execution environment for
+              evaluating computer-using agents across Windows, Ubuntu, macOS, iOS, Android, and Web environments.
+              OS-Omni provides reproducible initialization, platform-specific adapters, trajectory logging, and
+              executable final-state evaluators, and includes controlled service-backed applications for workflows
+              involving account, cart, budget, calendar, message, and other persistent state.
+            </p>
+            <p>
+              Human studies show that OS-Omni tasks require 67.54 interaction steps, substantially exceeding OSWorld
+              references of 15.0 steps. Throughout our experiments, the strongest evaluated agent, GPT-5.5, reaches
+              47.1% average success, trailing the 88.1% human reference by 41.0 points; on hard workflows, it drops from
+              77.8% success on easy tasks to 16.4%, while humans remain at 76.3%. These results indicate that current
+              agents remain far from platform-robust, long-horizon computer use, especially when success requires
+              sustained state tracking and durable final-state changes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <strong>1,200</strong>
+          <span>unique tasks</span>
+        </div>
+        <div class="metric-card">
+          <strong>6</strong>
+          <span>platform groups</span>
+        </div>
+        <div class="metric-card">
+          <strong>67.54</strong>
+          <span>human steps per task</span>
+        </div>
+        <div class="metric-card">
+          <strong>47.1%</strong>
+          <span>best agent success</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-light is-small" id="benchmark">
+    <div class="hero-body has-text-centered">
+      <h1 class="title is-1 section-title">OS-Omni Benchmark</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-widescreen">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths content has-text-justified">
+          <h2 class="title is-3 has-text-centered">Environment Infrastructure</h2>
+          <p>
+            The runtime stack combines shared orchestration with platform-specific adapters. Execution specifications
+            select the task, model, observation mode, action mode, and history window. Platform runners restore the
+            environment, run the agent loop, record trajectories, and invoke task-specific final-state evaluators.
+          </p>
+          <figure class="wide-figure">
+            <img src="./static/images/architecture.png" alt="OS-Omni architecture">
+          </figure>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-four-fifths content has-text-justified">
+          <h2 class="title is-3 has-text-centered">Benchmark Coverage</h2>
+          <p>
+            OS-Omni balances 200 tasks per platform group and covers cross-application workflows, productivity tasks,
+            daily-life tasks, browser tasks, and operating-system tasks. Controlled service-backed applications support
+            reproducible workflows involving carts, accounts, budgets, calendars, messages, and durable state.
+          </p>
+          <figure class="wide-figure">
+            <img src="./static/images/statistics.png" alt="OS-Omni benchmark statistics">
+          </figure>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-four-fifths content has-text-justified">
+          <h2 class="title is-3 has-text-centered">Comparison with Existing Benchmarks</h2>
+          <p>
+            Compared with representative executable GUI-agent benchmarks, OS-Omni provides broader platform coverage,
+            richer application diversity, cross-platform workflows, cross-application workflows, and curated applications
+            with reproducible final-state evaluation.
+          </p>
+          <figure class="wide-figure">
+            <img src="./static/images/benchmark_comparison.png" alt="Comparison with existing GUI-agent benchmarks">
+          </figure>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-four-fifths content has-text-justified">
+          <h2 class="title is-3 has-text-centered">Annotation Pipeline</h2>
+          <p>
+            Tasks are created through experience-based design, independent review, cross-platform difficulty calibration,
+            oracle-based execution validation, and failure-state testing. This process keeps the benchmark grounded in
+            realistic use while making final-state checks auditable.
+          </p>
+          <figure class="wide-figure">
+            <img src="./static/images/annotation_pipeline.png" alt="OS-Omni annotation pipeline">
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-light is-small" id="results">
+    <div class="hero-body has-text-centered">
+      <h1 class="title is-1 section-title">Experiment Results</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-widescreen">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths content has-text-justified">
+          <h2 class="title is-3 has-text-centered">Main Findings</h2>
+          <p>
+            The strongest evaluated agent, GPT-5.5, reaches 47.1% average success on the 300-task testmini subset,
+            trailing the 88.1% human reference by 41.0 points. On hard workflows, it drops from 77.8% success on easy
+            tasks to 16.4%, while humans remain at 76.3%.
+          </p>
+        </div>
+      </div>
+
+      <div class="leaderboard-panel">
+        <p class="leaderboard-subtitle">OS-Omni testmini benchmark - success rate (%)</p>
+
+        <div class="lb-controls">
+          <div class="lb-dropdown" id="osLeaderboardDropdown">
+            <button class="lb-dropdown-btn" id="osLeaderboardDropdownBtn" type="button">
+              All Entries <span class="lb-arrow">▾</span>
+            </button>
+            <ul class="lb-dropdown-menu" id="osLeaderboardDropdownMenu">
+              <li class="lb-dropdown-item active" data-filter="all">All Entries</li>
+              <li class="lb-dropdown-item" data-filter="human">Human Reference</li>
+              <li class="lb-dropdown-item" data-filter="general">General Models</li>
+              <li class="lb-dropdown-item" data-filter="specialized">Specialized CUA</li>
+            </ul>
+          </div>
+
+          <div class="lb-methods">
+            <label class="lb-check"><input type="checkbox" value="human" checked> Human Reference</label>
+            <label class="lb-check"><input type="checkbox" value="general" checked> General Models</label>
+            <label class="lb-check"><input type="checkbox" value="specialized" checked> Specialized CUA</label>
+          </div>
+        </div>
+
+        <div class="lb-table-wrap">
+        <table class="lb-table" id="osLeaderboard">
+          <thead>
+            <tr>
+              <th class="lb-sortable" data-col="0" data-kind="text">Model / Agent <span class="sort-icon">↺</span></th>
+              <th>Group</th>
+              <th class="lb-sortable" data-col="2" data-kind="number">Windows <span class="sort-icon">⇅</span></th>
+              <th class="lb-sortable" data-col="3" data-kind="number">Linux <span class="sort-icon">⇅</span></th>
+              <th class="lb-sortable" data-col="4" data-kind="number">macOS <span class="sort-icon">⇅</span></th>
+              <th class="lb-sortable" data-col="5" data-kind="number">iOS <span class="sort-icon">⇅</span></th>
+              <th class="lb-sortable" data-col="6" data-kind="number">Android <span class="sort-icon">⇅</span></th>
+              <th class="lb-sortable" data-col="7" data-kind="number">Web <span class="sort-icon">⇅</span></th>
+              <th class="lb-sortable" data-col="8" data-kind="number">Avg. <span class="sort-icon">⇅</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-group="human" class="lb-human-row">
+              <td>Human Performance</td>
+              <td><span class="lb-badge lb-badge-human">Human</span></td>
+              <td>89.2</td>
+              <td>87.3</td>
+              <td>89.9</td>
+              <td>87.6</td>
+              <td>86.3</td>
+              <td>88.5</td>
+              <td><b>88.1</b></td>
+            </tr>
+            <tr data-group="general" class="lb-highlight">
+              <td>GPT-5.5</td>
+              <td><span class="lb-badge lb-badge-general">General</span></td>
+              <td>54.0</td>
+              <td>41.3</td>
+              <td>48.5</td>
+              <td>41.7</td>
+              <td>50.0</td>
+              <td>47.3</td>
+              <td><b>47.1</b></td>
+            </tr>
+            <tr data-group="general">
+              <td>GPT-5.4</td>
+              <td><span class="lb-badge lb-badge-general">General</span></td>
+              <td>19.8</td>
+              <td>46.3</td>
+              <td>33.3</td>
+              <td>56.3</td>
+              <td>16.7</td>
+              <td>35.5</td>
+              <td>34.6</td>
+            </tr>
+            <tr data-group="general">
+              <td>Claude Opus 4.7</td>
+              <td><span class="lb-badge lb-badge-general">General</span></td>
+              <td>26.4</td>
+              <td>48.8</td>
+              <td>36.0</td>
+              <td>33.4</td>
+              <td>27.1</td>
+              <td>36.1</td>
+              <td>34.6</td>
+            </tr>
+            <tr data-group="general">
+              <td>Gemini 3.1 Pro</td>
+              <td><span class="lb-badge lb-badge-general">General</span></td>
+              <td>20.0</td>
+              <td>21.3</td>
+              <td>20.0</td>
+              <td>32.1</td>
+              <td>25.1</td>
+              <td>22.0</td>
+              <td>23.4</td>
+            </tr>
+            <tr data-group="general">
+              <td>Gemini 3 Pro</td>
+              <td><span class="lb-badge lb-badge-general">General</span></td>
+              <td>16.8</td>
+              <td>21.3</td>
+              <td>16.3</td>
+              <td>22.9</td>
+              <td>14.6</td>
+              <td>21.1</td>
+              <td>18.8</td>
+            </tr>
+            <tr data-group="general">
+              <td>Qwen 3.6 Plus</td>
+              <td><span class="lb-badge lb-badge-general">General</span></td>
+              <td>12.8</td>
+              <td>10.0</td>
+              <td>13.0</td>
+              <td>22.9</td>
+              <td>10.5</td>
+              <td>17.9</td>
+              <td>14.5</td>
+            </tr>
+            <tr data-group="general">
+              <td>Kimi K2.6</td>
+              <td><span class="lb-badge lb-badge-general">General</span></td>
+              <td>2.7</td>
+              <td>8.8</td>
+              <td>3.2</td>
+              <td>4.4</td>
+              <td>3.4</td>
+              <td>7.1</td>
+              <td>4.9</td>
+            </tr>
+            <tr data-group="specialized">
+              <td>ScaleCUA-32B</td>
+              <td><span class="lb-badge lb-badge-specialized">Specialized</span></td>
+              <td>7.9</td>
+              <td>21.3</td>
+              <td>0.0</td>
+              <td>4.2</td>
+              <td>0.0</td>
+              <td>15.1</td>
+              <td>8.1</td>
+            </tr>
+            <tr data-group="specialized">
+              <td>OpenCUA-72B</td>
+              <td><span class="lb-badge lb-badge-specialized">Specialized</span></td>
+              <td>7.9</td>
+              <td>20.0</td>
+              <td>18.8</td>
+              <td>4.2</td>
+              <td>0.0</td>
+              <td>9.8</td>
+              <td>10.1</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="table-note">
+          Values aggregate easy and hard success rates by platform. The full paper table reports separate easy and hard
+          cells for each platform.
+        </p>
+      </div>
+
+      <div class="columns is-centered human-charts">
+        <div class="column is-half content has-text-centered">
+          <img src="./static/images/human_time.png" alt="Human completion time by platform">
+          <p>Human completion time by platform.</p>
+        </div>
+        <div class="column is-half content has-text-centered">
+          <img src="./static/images/human_steps.png" alt="Human interaction steps by platform">
+          <p>Human interaction steps by platform.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-light is-small" id="examples">
+    <div class="hero-body has-text-centered">
+      <h1 class="title is-1 section-title">Task and Error Examples</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-widescreen">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths content has-text-justified">
+          <h2 class="title is-3 has-text-centered">Platform Case Studies</h2>
+          <p>
+            These case studies show representative screenshot-only tasks across desktop and mobile platforms. The
+            platform buttons in the header jump directly to the corresponding case.
+          </p>
+        </div>
+      </div>
+
+      <div class="case-study-list">
+        <article class="case-study" id="case-windows">
+          <div class="case-copy">
+            <h3>Windows</h3>
+          </div>
+          <img src="./static/images/examples/windows_1.jpg" alt="Windows case study">
+        </article>
+
+        <article class="case-study" id="case-ubuntu">
+          <div class="case-copy">
+            <h3>Ubuntu</h3>
+          </div>
+          <img src="./static/images/examples/linux_1.jpg" alt="Ubuntu case study">
+        </article>
+
+        <article class="case-study" id="case-macos">
+          <div class="case-copy">
+            <h3>macOS</h3>
+          </div>
+          <img src="./static/images/examples/macos_1.jpg" alt="macOS case study">
+        </article>
+
+        <article class="case-study" id="case-android">
+          <div class="case-copy">
+            <h3>Android</h3>
+          </div>
+          <img src="./static/images/examples/android_1.jpg" alt="Android case study">
+        </article>
+
+        <article class="case-study" id="case-ios">
+          <div class="case-copy">
+            <h3>iOS</h3>
+          </div>
+          <img src="./static/images/examples/ios_1.jpg" alt="iOS case study">
+        </article>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-four-fifths content has-text-justified">
+          <h2 class="title is-3 has-text-centered">Qualitative Error Cases</h2>
+          <p>
+            Common failures include visual grounding errors, state-tracking errors, persistence errors, platform timing
+            issues, and transfer mistakes in cross-platform workflows.
+          </p>
+        </div>
+      </div>
+
+      <div class="carousel-shell" data-carousel="errors">
+        <button class="carousel-btn prev" type="button" aria-label="Previous error example">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="carousel-track">
+          <figure class="carousel-slide is-active">
+            <img src="./static/images/errors/linux_error.jpg" alt="Linux error case">
+            <figcaption>Ubuntu/Linux error case</figcaption>
+          </figure>
+          <figure class="carousel-slide">
+            <img src="./static/images/errors/windows_error.jpg" alt="Windows error case">
+            <figcaption>Windows error case</figcaption>
+          </figure>
+          <figure class="carousel-slide">
+            <img src="./static/images/errors/macos_error.jpg" alt="macOS error case">
+            <figcaption>macOS error case</figcaption>
+          </figure>
+        </div>
+        <button class="carousel-btn next" type="button" aria-label="Next error example">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@misc{anonymous2026osomni,
+  title = {OS-Omni: Benchmarking Generalist Computer-Using Agents on Long-Horizon Workflows Across Platforms},
+  author = {Anonymous Authors},
+  year = {2026},
+  note = {NeurIPS 2026 submission}
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        This website follows the academic project-page style of the PhyX homepage template and is adapted for OS-Omni.
+      </p>
+    </div>
+  </footer>
+
+  <script src="./static/js/index.js"></script>
+</body>
+
+</html>
