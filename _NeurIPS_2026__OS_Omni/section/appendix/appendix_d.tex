@@ -1,0 +1,311 @@
+\section{Qualitative Analysis}
+\label{appendix:qualitative_analysis}
+Qualitative analysis in \textsc{OS-Omni} is based on saved trajectories, runtime metadata, and final artifacts rather than isolated screenshots. Each inspected run records the platform lane, task identifier, model, observation mode, action mode, episode status, evaluator result, and the first step at which the trajectory diverges from a plausible solution. This makes qualitative inspection useful for separating model errors from benchmark-system failures such as initialization drift, runtime instability, or evaluator mismatch.
+
+\subsection{Success and Failure Cases}
+Successful episodes typically share three properties. The agent maintains the user goal across application transitions, grounds actions in the current observation, and leaves the target artifact or application record in a verifiably saved state. Failed episodes often diverge before the final evaluator is invoked: the agent clicks an adjacent control, overlooks a modal dialog, types into the wrong field, loses track of transferred information, or stops after reaching a visually plausible but incomplete state. These cases illustrate why \textsc{OS-Omni} scores final environment state rather than trajectory similarity.
+
+\subsection{Common Errors by Screenshot-only Agents}
+\label{appendix:common_errors}
+\begin{table*}[ht]
+\centering
+\caption{Failure taxonomy for screenshot-only \textsc{OS-Omni} runs.}
+\label{tab:screenshot_only_failure_taxonomy}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular}{p{2.8cm}p{5.4cm}p{5.8cm}}
+\toprule
+Failure type & Typical symptom & Where it is especially visible \\
+\midrule
+Visual grounding & Selects a neighboring button, wrong cell, hidden tab, or stale menu item & Dense office files, diagrams, packet views, mobile settings \\
+Semantic interpretation & Misreads visible text, UI labels, document content, or task-relevant state & Forms, calendars, references, packet views, canvas-heavy apps \\
+Long-horizon state tracking & Forgets copied values, loses schedule details, or repeats a completed subgoal & Multi-app desktop tasks; Android and iOS coordination tasks \\
+Persistence & Performs the visible edit but fails to save, export, send, or confirm it & Office suites, image editors, mail clients, notes, shopping carts \\
+Timing or modal handling & Acts before loading finishes, ignores a permission prompt, or types into a dialog & Mobile apps, browser tasks, app launches, restored desktop sessions \\
+Input or tool syntax & Enters text in the wrong field, hits keyboard occlusion, or uses a platform-specific shortcut incorrectly & Android, iOS, macOS, and Windows text-entry tasks \\
+Transfer & Produces an incomplete source artifact or consumes the wrong transferred object & Cross-platform workflows \\
+Benchmark system & Initializer drift, runtime failure, or evaluator mismatch prevents a clean judgment & Reported separately from model failure \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Human-Agent Difficulty Discrepancies}
+\label{appendix:human_vs_agent}
+Human difficulty and agent difficulty can diverge sharply in GUI benchmarks. Humans are robust to small UI variations, hidden save states, and modal dialogs, but may be slower on repetitive data-entry tasks. Agents can be efficient when the interface is visually simple and the target state is explicit, but they remain brittle under dense layouts, long-horizon memory requirements, platform-specific shortcuts, and tasks where success depends on confirming a saved or exported artifact.
+
+For this reason, human studies should use the same initializer and final-state evaluator as model runs, while recording completion time and ambiguity notes. Infrastructure failures such as VM restore errors, simulator crashes, app-service outages, or evaluator exceptions should be excluded from human-agent comparisons and reported as benchmark-system failures.
+
+\subsection{Comparative Analysis across Models}
+\label{appendix:model_comparison}
+Model comparisons should be organized by failure mechanism rather than by anecdotal task outcome. For example, two VLMs may both fail a spreadsheet task, but one may misread the screen while the other may identify the correct cell and then fail to persist the edit. Similarly, a text-oriented model with accessibility metadata may perform well on labeled forms but fail on canvas-heavy image or diagram tasks. We therefore group inspected trajectories by observation mode, platform lane, task family, and first-failure cause.
+
+\subsection{Analysis of SoM Effectiveness}
+SoM can improve localization when a model can reason over discrete visual marks, but it can also introduce clutter or bias the agent toward marked regions that are not semantically relevant. In \textsc{OS-Omni}, SoM tests a specific hypothesis about visual grounding. It is reported as an ablation rather than a replacement for screenshot-only evaluation, because the benchmark's core cross-platform question is whether agents can operate from the same visual signal across desktop, mobile, and web environments.
+
+\subsection{Endpoint-Level Error Cases}
+\label{appendix:endpoint_error_cases}
+\hypertarget{app:error_case_figure_list}{}
+
+We further provide three representative error cases for each endpoint: Ubuntu/Linux, Windows, macOS, Android, iOS, and Web. The cases are selected to illustrate distinct failure mechanisms rather than repeated instances of the same error type. The full set is shown in Figures~\ref{fig:linux_error_case_1}--\ref{fig:macos_error_case_2}.
+
+\clearpage
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Linux tasks/L12.pdf}}
+\caption{Representative Ubuntu/Linux task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:linux_task_examples_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Linux tasks/L34.pdf}}
+\caption{Representative Ubuntu/Linux task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:linux_task_examples_2}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Linux tasks/L56.pdf}}
+\caption{Representative Ubuntu/Linux task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:linux_task_examples_3}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Linux tasks/L78.pdf}}
+\caption{Representative Ubuntu/Linux task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:linux_task_examples_4}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Linux tasks/L910.pdf}}
+\caption{Representative Ubuntu/Linux task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:linux_task_examples_5}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Linux_tasks/L1112.pdf}}
+\caption{Representative Ubuntu/Linux task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:linux_task_examples_6}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W1.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W2.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_2}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W3.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_3}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W4.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_4}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W5.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_5}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W6.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_6}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W7.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_7}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Windows_Tasks/W8.pdf}}
+\caption{Representative Windows task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:windows_task_examples_8}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/macOS_Tasks/M1.pdf}}
+\caption{Representative macOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:macos_task_examples_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/macOS_Tasks/M2.pdf}}
+\caption{Representative macOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:macos_task_examples_2}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/macOS_Tasks/M3.pdf}}
+\caption{Representative macOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:macos_task_examples_3}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/macOS_Tasks/M4.pdf}}
+\caption{Representative macOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:macos_task_examples_4}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/macOS_Tasks/M5.pdf}}
+\caption{Representative macOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:macos_task_examples_5}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/macOS_Tasks/M6.pdf}}
+\caption{Representative macOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:macos_task_examples_6}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Android_Tasks/AN1.pdf}}
+\caption{Representative Android task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:android_task_examples_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/Android_Tasks/AN2.pdf}}
+\caption{Representative Android task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:android_task_examples_2}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/iOS_Tasks/iOS1.pdf}}
+\caption{Representative iOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:ios_task_examples_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/Study_Case_(Screenshot)/iOS_Tasks/iOS2.pdf}}
+\caption{Representative iOS task examples.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:case_figure_list}{Back to list of figures}}
+\label{fig:ios_task_examples_2}
+\end{figure*}
+
+\clearpage
+
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/1.pdf}}
+\caption{Representative Ubuntu/Linux error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:linux_error_case_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/2.pdf}}
+\caption{Representative Ubuntu/Linux error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:linux_error_case_2}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/3.pdf}}
+\caption{Representative Ubuntu/Linux error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:linux_error_case_3}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/4.pdf}}
+\caption{Representative Windows error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:windows_error_case_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/5.pdf}}
+\caption{Representative Windows error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:windows_error_case_2}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/6.pdf}}
+\caption{Representative Windows error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:windows_error_case_3}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/7.pdf}}
+\caption{Representative macOS error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:macos_error_case_1}
+\end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics[width=\textwidth]{\detokenize{figures/error_case/Error_case/8.pdf}}
+\caption{Representative macOS error case.}
+\par\smallskip\centering{\footnotesize\hyperlink{app:error_case_figure_list}{Back to error-case list}}
+\label{fig:macos_error_case_2}
+\end{figure*}

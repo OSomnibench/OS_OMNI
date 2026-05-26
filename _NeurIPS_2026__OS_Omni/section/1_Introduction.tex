@@ -1,0 +1,46 @@
+
+\section{Introduction}
+A useful computer-using agent~\citep{wu2025osatlas,gou2025navigating,wang2025opencua,liu2025scalecua} should be able to carry an ordinary user goal through the software environments where that goal actually lives. 
+Consider a user preparing a small event: the agent may need to compare supplies in a controlled shopping service, add selected items to a cart, update a budget spreadsheet on a desktop, create follow-up calendar entries on a phone, export a short document, and send a message with the right details attached. None of these steps is remarkable in isolation, yet the full request crosses platform conventions, spans many intermediate decisions, and can only be judged by checking the resulting cart, records, calendar entries, exported file, and message state. The central capability is not clicking the right widget once, but sustaining an intent until the underlying software state is correct.
+
+This work asks: \emph{can generalist computer-using agents reliably complete realistic, long-horizon, stateful workflows across heterogeneous software platforms?} The difficulty is not only that such workflows contain more steps. Agents must sustain the user's intent, track partially completed state, coordinate multiple objects or applications, adapt to platform-specific interaction mechanisms, and produce final artifacts or records that can be checked after execution. A benchmark for this capability therefore needs to evaluate both breadth across platforms and depth within workflows.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=5.2in]{figures/Figure_1.pdf}
+    \caption{
+    \dataset is a cross-platform executable environment for multimodal computer-using agents, supporting reproducible initialization, native interaction, execution-based evaluation, and trajectory analysis across operating systems.
+    It provides a unified benchmark protocol for realistic workflows involving desktop and mobile applications, controlled service-backed applications, and cross-application or cross-environment state transfer.
+    }
+    \label{fig:overview}
+\end{figure}
+
+Existing benchmarks have made substantial progress by studying important slices of this problem. Browser-focused benchmarks evaluate web navigation, information seeking, and visual web interaction through browser-centric action and state spaces \citep{zhou2023webarena,koh2024visualwebarena,deng2023mind2web,he2024webvoyager,sun2025genesis,gou2026mindweb}. Enterprise-web benchmarks emphasize structured work over service-backed interfaces \citep{drouin2024workarena}, while mobile benchmarks study dynamic interaction with phone applications \citep{rawles2024androidworld,sun2025sentinel,cheng2026openmobile}. Desktop benchmarks move evaluation into executable operating-system environments, where agents must operate real applications rather than predict isolated actions \citep{xie2024osworld,bonatti2024windows}. These efforts establish that execution matters, but they still expose agents to one dominant software surface at a time, often with different platform scopes, action interfaces, task styles, and scoring protocols. As a result, strong performance on one family of environments can be hard to interpret as evidence of general computer use, rather than adaptation to a particular platform.
+
+OSWorld was a major step toward general computer-using evaluation because it established execution-based evaluation in real desktop environments \citep{xie2024osworld}. However, desktop-only evaluation leaves open whether agents can handle realistic workflows that span heterogeneous software surfaces, longer task horizons, and persistent application state. \dataset extends this paradigm along two axes: \textbf{cross-platform evaluation} and \textbf{long-horizon workflows}, coupled with an execution-based evaluation protocol based on \textbf{final-state correctness}. Together, these features shift the benchmark from testing whether an agent can operate a particular interface toward testing whether it can complete a user goal across platforms. Human users require an average of \textbf{67.54} interaction steps and \textbf{200.97} seconds to complete \dataset tasks, compared with OSWorld reference tasks requiring 15.0 steps and 111.94 seconds, indicating that \dataset evaluates substantially longer and more involved workflows rather than only broader platform coverage.
+
+These axes are coupled because failures often emerge at their intersections. Changing the platform changes the interaction bottleneck: a calendar update that is straightforward in a desktop dialog may require picker wheels, modal sheets, and soft-keyboard input on a phone. Extending the horizon changes the burden of memory and coordination: adding one contact is easier than reconciling a directory with stale duplicates, and editing one field is easier than creating, deleting, reordering, and verifying a target set of records. Final-state evaluation also changes what counts as success: a document may look visually complete while its exported file or internal formatting remains wrong, and a shopping workflow may appear complete while the cart or budget record is inconsistent. \dataset therefore evaluates not whether an agent can produce plausible intermediate progress, but whether it can leave behind the correct durable state.
+
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/Figure_2.pdf}
+    \caption{
+    Overview of the \dataset environment infrastructure. Execution specifications select tasks, models, observation modes, and action modes; platform runners instantiate the corresponding runtime, run the agent loop, and invoke task-specific evaluators.
+    }
+    \vspace{-15pt}
+    \label{fig:arch_figure}
+\end{figure}
+
+To study this setting, we introduce \dataset, a 1,200-task cross-platform benchmark and execution environment for evaluating computer-using agents across Windows, Ubuntu, macOS, iOS, Android, and web environments. Each task specifies a natural-language instruction, reproducible initialization, platform-specific adapters, trajectory logging, and an executable final-state evaluator. On a 300-task \textit{testmini} subset, we evaluate frontier generalist models and specialized computer-using agents. The strongest model, GPT-5.5, reaches 47.1\% average success, 41.0 points below the human reference of 88.1\%. This gap widens on hard workflows: GPT-5.5 drops from 77.8\% success on easy tasks to 16.4\% on hard tasks, whereas humans remain at 76.3\% on hard tasks. These results suggest that current agents have not yet learned platform-robust, long-horizon computer use: they can solve many visually explicit tasks, but often fail when success requires sustained state tracking, platform-specific control, and durable final-state changes.
+
+
+
+In summary, this paper makes the following contributions:
+\begin{itemize}[leftmargin=1.5em,itemsep=0pt,topsep=2pt,parsep=0pt]
+    \item We introduce \dataset, a 1,200-task benchmark for cross-platform computer-using agents.
+    \item We design long-horizon workflows centered on state tracking, cross-application coordination, and final-state correctness.
+    \item We build a unified evaluation framework with reproducible initialization, native action backends, trajectory logging, and executable final-state evaluators.
+    \item We evaluate frontier and specialized agents, showing that even the best model remains 41.0 points behind humans and struggles on hard, long-horizon workflows.
+\end{itemize}

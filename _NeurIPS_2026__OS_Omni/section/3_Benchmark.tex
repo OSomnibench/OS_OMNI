@@ -1,0 +1,76 @@
+\section{\dataset Benchmark}
+% 加web说明
+We introduce the \dataset benchmark, which contains 1200 real-world computer use tasks executed across Linux, Windows, macOS, Android, iOS, and cross-platform workflows.~\footnote{Due to copyright issues, Windows tasks require activation by the user, macOS and iOS tasks require Apple hardware.} Each task includes a natural-language goal, a reproducible initialization procedure, and a final-state evaluator.
+
+\subsection{Operating System and Software Environments}
+
+\dataset supports all mainstream operating systems, including \textbf{{desktop operating systems (Windows\windowsicon, macOS\macicon, Ubuntu\linuxicon)}}, \textbf{\textit{mobile operating systems (iOS\iosicon, Android\androidicon)}}, \textbf{{web (Chrome\chromeicon, Safari\safariicon)}}, and \textbf{{workflows that cross platforms}}. All platforms share the same specification format, while each platform retains the runtime mechanisms required by its own software stack. As shown in Figure~\ref{fig:distribution}, \dataset covers the most common categories of applications used in everyday digital life. Each example of these applications is shown in Appendix~\ref{app:more_task_examples}. 
+% The desktop tasks including office editing, email, programming, graphics, diagrams, finance, media, reference management, maps, network analysis, shopping, and chat. Representative applications include LibreOffice, Thunderbird, GIMP, Blender, Wireshark, Zotero, Actual Budget, draw.io, VS Code, Notepad-like editors, Spotube, Delta Chat, and Marble. The mobile tasks including mail, messaging, notes, local storage, calendars, reminders, finance, browsing, shopping, galleries, music, and task management through applications such as K-9 Mail, Delta Chat, Markor, Fossify apps, Material Files, Oinkoin, Tasks.org, LibreOffice Viewer, Safari, FSNotes, Flow, Habit, and Maily.
+
+
+% \input{table/dataset_compare}
+
+
+
+\subsection{Custom Software for Controlled Application Coverage}
+Real-world CUA workflows often involve applications that are difficult to include in benchmark environments. We address this issue by developing two types of custom software environments.
+
+The first type targets service-oriented applications that are broadly important in everyday use but are usually excluded from existing benchmarks, such as online shopping, food ordering, or ride hailing. These scenarios require user accounts, payments, or unstable third-party backends, making them difficult to reproduce. To cover such workflows while preserving benchmark controllability, we built controlled applications that emulate login-based interactions. These applications provide realistic GUIs while keeping all data local or under the benchmark runtime, allowing reliable evaluation without depending on live commercial platforms or real user accounts.
+
+The second type targets application domains that are available on some platforms with existing open-source software but are missing on others. Since \dataset aims to evaluate generalist CUA across desktop, mobile, and web platforms, we build additional platform-specific applications to fill these gaps and maintain comparable task coverage. This ensures that the benchmark evaluates generalist CUA capabilities under a shared task taxonomy, rather than being limited by the uneven availability of open-source applications on different operating systems.
+
+\subsection{Tasks}
+\vspace{-5pt}
+\dataset consists of 1,200 meticulously curated CUA tasks across six platforms: \textbf{\textit{macOS}} (200), \textbf{\textit{Windows}} (200), \textbf{\textit{Ubuntu}} (200), \textbf{\textit{iOS}} (200), \textbf{\textit{Android}} (200), and \textbf{\textit{Web}} (200). The Web tasks are evenly distributed across the supported OS platforms and are instantiated through four widely used browsers: \textit{Chrome}, \textit{Edge}, \textit{Firefox}, and \textit{Safari}. Each task is represented by a specification that names the platform, instruction, initialization, and evaluator. Overall, the dataset construction was completed by 30 computer science graduate students over two months, with approximately 2,400 person-hours devoted to annotation and an additional 400 person-hours devoted to double-checking.
+
+% \noindent
+% \textbf{Task Annotation.}
+% Our tasks are designed around software that annotators regularly use in their daily work, making them highly familiar with the corresponding interfaces, workflows, and practical usage patterns. In contrast, many existing benchmarks derive tasks from online tutorials, user guides, or documentation, which often leads to relatively basic and instructional scenarios. By leveraging real experience with these applications, our benchmark captures more realistic workflows and includes challenging tasks that better reflect how software is actually used in practice. The detailed examples of our task are shown in Appendix~\ref{}.  
+
+% \noindent
+% \textbf{Quality Control.} 
+% To further control the quality of our data, we perform a five-stage data checking process. Each task is first constructed by an annotator with hands-on experience using the target software, ensuring that the workflow reflects realistic software usage. A second annotator then independently examines the task for clarity, feasibility, and potential ambiguity. Next, annotators calibrate task difficulty across platforms by comparing the expected number of human operation steps and revising accordingly. This calibration helps ensure that tasks from different platforms have approximately comparable human-step difficulty. We then use oracle trajectories to validate both the initializer and the evaluator. Specifically, the oracle execution is run from the initialized environment to verify that the task is solvable under the provided state, and the resulting final state is checked by the evaluator to ensure that a correct completion is reliably recognized. We further test representative failed or incomplete states to confirm that the evaluator rejects spurious solutions. Tasks whose initializer, instruction, difficulty level, or evaluator fails any of these checks are revised through additional inspection or removed from the benchmark.
+
+\noindent
+\textbf{Initial State Setup.}
+Tasks rarely start from a blank desktop or a newly installed app. \dataset constructs these states in three stages: first restoring a platform baseline, then materializing task-specific data, and finally arranging the applications that the agent will observe. A task may restore a VM or simulator baseline, clone an execution template, reset selected applications, write files into the environment, seed application databases, configure local services, or place a transfer object for a subsequent phase. This design avoids storing a separate full-system image for every task while still allowing tasks to begin from realistic intermediate states.
+
+
+
+\noindent
+\textbf{Execution-based Evaluation.} 
+\dataset uses final-state evaluators, which are executable scoring components selected by the task specification. The evaluations run guest-side checks, retrieve outputs from the runtime, parse application data, inspect local services, or compare generated objects against expected constraints. A successful task is therefore one whose final state satisfies the evaluator.
+
+\subsection{Task Annotation Pipeline}
+\label{sec:annotation_pipeline}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/annotation.pdf}
+\caption{The five-stage task annotation pipeline for \dataset.}
+\vspace{-15pt}
+\label{fig:annotation}
+\end{figure*}
+
+As shown in Figure~\ref{fig:annotation}, we use a five-stages annotation pipeline:
+
+(1) \textbf{Experience-Based Task Design.} Each task is constructed by an annotator with hands-on experience using the target software. The annotator designs a natural-language instruction together with the initialization procedure and evaluator. This stage ensures that the task is grounded in realistic software usage rather than being limited to basic operations.
+(2) \textbf{Independent Task Review.} A second annotator examines each task for feasibility and ambiguity. This review checks whether the instruction is understandable, whether the task can be completed under the initialized environment, and whether the expected outcome is sufficiently well-defined for reliable evaluation.
+(3) \textbf{Cross-Platform Difficulty Calibration.} Annotators then calibrate task difficulty across platforms by comparing the expected number of human operation steps required to complete each task. Tasks are revised when necessary to reduce large difficulty discrepancies, helping ensure that tasks from different platforms have comparable difficulty.
+(4) \textbf{Oracle-Based Execution Validation.} We use oracle trajectories to validate both the initializer and the evaluator. Specifically, the oracle execution is run from the initialized environment to verify that the task is solvable under the provided state. The resulting final state is then checked by the evaluator to ensure that a correct completion is reliably recognized.
+(5) \textbf{Failure-State Testing and Final Revision.} To further test evaluator robustness, we examine representative failed cases and verify that the evaluator rejects incorrect solutions. Tasks whose initializer, instruction, difficulty level, or evaluator fails any stage of the checking process are revised through additional inspection or removed from the benchmark.
+
+
+
+\subsection{Data Statistics}
+
+\input{table/statistics}
+The main statistics of \dataset are summarized in Figure~\ref{fig:distribution}. \dataset contains 1,200 tasks, balanced across the five operating systems, web tasks are instantiated through browser environments on these platforms. The right chart in Figure~\ref{fig:distribution} summarizes the task taxonomy. At the coarse level, \dataset covers cross-application workflows (25.7\%), professional productivity tasks (22.9\%), daily-life tasks (20.0\%), web tasks (17.1\%), and operating-system tasks (14.3\%). We leave the complete fine-grained taxonomy and representative examples to Appendix~\ref{app:more_task_examples}.
+
+
+
+
+\subsection{Comparison with existing benchmarks}
+Figure~\ref{fig:comparison_benchmarks} compares \dataset with representative existing benchmarks in terms of platform coverage, task scale, application diversity, cross-platform workflows, cross-application workflows, and curated applications. WorkArena~\citep{drouin2024workarena}, WebArena~\citep{zhou2023webarena}, and VisualWebArena~\citep{koh2024visualwebarena} evaluate agents in web environments. AndroidWorld~\citep{rawles2024androidworld} focuses on Android. OSWorld~\citep{yang2025macosworld}, WindowsAgentArena~\citep{bonatti2024windows}, AssistGUI~\citep{gao2023assistgui}, WorldGUI~\citep{zhao2025worldgui}, macOSWorld~\citep{yang2025macosworld}, ScienceBoard~\citep{sun2025scienceboard}, MMBench-GUI~\citep{wang2025mmbench}, and OS-MAP~\citep{chen2025map} extend evaluation to desktop or multi-platform GUI settings, but they do not provide the same level of coverage across desktop, mobile, web, and cross-platform workflows.
+
+In contrast, \dataset unifies Windows, Linux, macOS, iOS, Android, and Web environments under a single benchmark setting. It further introduces benchmark-controlled applications and services to support workflows involving persistent user state, backend records, shopping carts, orders, and payment-like options. Compared with benchmarks that rely on public websites, external accounts, or preloaded local profiles, this design enables reproducible initialization and reliable final-state evaluation without depending on live commercial platforms or real user accounts. As a result, \dataset evaluates agents on realistic service-oriented workflows that span multiple applications and platforms, rather than isolated GUI operations alone.

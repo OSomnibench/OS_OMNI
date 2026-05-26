@@ -1,0 +1,186 @@
+\section{Details of the \textsc{OS-Omni} Benchmark}
+
+\subsection{Platform Selection}
+\label{app:os_selection}
+\textsc{OS-Omni} evaluates agents across Windows, Ubuntu, macOS, iOS, Android, and Web environments. The selection is intended to cover desktop, mobile, and browser-based computer use rather than optimize for market share alone. In StatCounter's March 2026 worldwide statistics, Windows accounts for 60.8\% of desktop traffic, OS X/macOS for 14.76\%, Linux for 3.16\%, and ChromeOS for 1.62\%.\footnote{\url{https://gs.statcounter.com/os-market-share/desktop/worldwide}, March 2026 data.} We include Windows and macOS to cover major proprietary desktop ecosystems, and Ubuntu/Linux to provide an open, reproducible desktop stack with broad office, communication, graphics, networking, and developer workflows. The Web group is included as a first-class benchmark environment because many everyday computer tasks are performed through browsers and service-backed interfaces. The current release therefore centers on controlled desktop, mobile, and web runtimes with comparable final-state evaluation.
+
+For mobile environments, Android and iOS account for 67.46\% and 32.27\% of worldwide mobile operating-system traffic, respectively.\footnote{\url{https://gs.statcounter.com/os-market-share/mobile/worldwide}, March 2026 data.} They introduce interaction modes absent from desktop-only benchmarks, including touch gestures, software keyboards, permission dialogs, app switching, and device-specific state. Web tasks are instantiated through widely used browsers on supported operating systems, including Chrome, Edge, Firefox, and Safari. Together, these environment groups require agents to operate under a unified screenshot-only protocol across pointer-and-keyboard desktops, touch-first mobile devices, and browser-based workflows. We additionally include cross-platform workflows to evaluate cases in which artifacts or information must be prepared in one environment and consumed in another.
+
+\subsection{Software Selection}
+\label{app:software_selection}
+We select applications to span common end-user workflows while preserving deterministic initialization and final-state evaluation. The suite is intentionally centered on everyday applications and task patterns, so that the benchmark covers the kinds of software needs that arise in ordinary desktop and mobile use. It emphasizes software with persistent, user-visible state, including documents, spreadsheets, presentations, messages, calendars, notes, budgets, shopping carts, media libraries, references, diagrams, images, 3D scenes, packet captures, files, and editor workspaces. Applications whose success depends primarily on remote availability or hidden server-side state are used only when their state can be seeded and evaluated through controlled artifacts.
+
+On desktop platforms, \textsc{OS-Omni} uses overlapping application families rather than an identical software stack. This supports cross-platform comparison while respecting native availability and user conventions. Representative families include office suites, communication tools, finance software, graphics and 3D editors, diagramming tools, packet-analysis tools, reference managers, media applications, and text or code editors. For shopping workflows, we use QuickShop, a controlled benchmark application, instead of real e-commerce services. This preserves the core interaction structure of shopping tasks, including search, cart editing, option selection, and checkout confirmation. At the same time, it avoids personal data collection, payment handling, real purchases, account security risks, and benchmark drift from external commercial systems.
+
+On mobile platforms, the selected applications exercise touch-first interaction and app-level persistence through finance, notes, mail, calendar, reminders, contacts, browsing, file management, and system-utility tasks. Web tasks use browser-native interaction with benchmark-controlled services when external state would otherwise make evaluation unstable. Across all platforms, inclusion requires three properties: the environment can initialize meaningful state, the evaluator can inspect the final state, and the interface supports realistic visually grounded interaction, state tracking, and multi-step planning.
+
+\subsection{Task Example Sources}
+\label{sub:task_exam_srcs}
+We construct task examples from sources that reflect ordinary computer use while remaining reproducible under execution-based evaluation. Public documentation, application tutorials, community Q\&A, how-to resources, common productivity workflows, controlled benchmark applications, and cross-application scenarios are used to identify realistic user intents, application states, and evaluable final conditions. These sources seed tasks in office editing, email, chat and messaging, calendar management, finance, file handling, media, diagrams, packet analysis, reference management, and developer-style editing.
+
+Not all realistic workflows can be used directly. Tasks are included only when the benchmark can initialize a meaningful state and evaluate the final result without relying on a hidden reference trajectory. For workflows involving external services, privacy-sensitive data, or unstable online state, we either use controlled local artifacts or a benchmark application with the same interaction structure. QuickShop is one such example: it lets us evaluate search, cart editing, option selection, and checkout confirmation without involving real purchases, payment information, or user accounts.
+
+We also include tasks that cover common interaction conditions in real applications, such as dense visual layouts, small controls, modal dialogs, delayed saves, software keyboards, app switching, long forms, and information transfer across applications or platforms. The goal is not to imitate a single demonstration, but to define a user intent, an initial state, and a final-state check. Each task is therefore represented as a YAML specification containing the instruction, initializer, limits, metadata, and evaluator.
+
+Task authoring follows the same validation discipline as the main benchmark pipeline. Annotators first design tasks from hands-on use cases, calibrate the difficulty so that completion requires meaningful planning rather than a single obvious click, and then execute the oracle version to confirm that the initializer, runtime, and evaluator support the intended goal. Failure-state checks are used to catch underspecified instructions, accidental shortcuts, and evaluators that accept incomplete results.
+
+\subsection{Task Examples Collection}
+\label{app:examples_collection}
+\textsc{OS-Omni} contains 1,200 task specifications, with 200 tasks for each of Windows, Ubuntu, macOS, iOS, Android, and Web. Each task is paired with an oracle specification used for validation, debugging, and sanity checks. The oracle versions are not treated as separate benchmark tasks; instead, they provide a controlled reference for checking task feasibility, initializer correctness, runtime stability, and evaluator behavior. Table~\ref{tab:task_collection_statistics} summarizes the task distribution and oracle coverage.
+
+\begin{table*}[ht]
+\centering
+\caption{Task distribution and oracle coverage in the \textsc{OS-Omni} benchmark.}
+\label{tab:task_collection_statistics}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}X}
+\toprule
+Platform group & Tasks & Oracle coverage & Representative task families \\
+\midrule
+Windows & 200 & 100\% & Office editing, communication, shopping, diagrams, packet analysis, reference management, and development workflows \\
+Ubuntu & 200 & 100\% & Office editing, email and chat, finance, graphics, 3D editing, packet analysis, references, media, and file workflows \\
+macOS & 200 & 100\% & Text and code editing, office workflows, email and calendar tasks, references, media, graphics, and productivity applications \\
+iOS & 200 & 100\% & Notes, browsing, mail, calendar, reminders, contacts, finance, shopping, and mobile productivity workflows \\
+Android & 200 & 100\% & Mail, notes, chat, calendar, finance, shopping, file management, media management, contacts, and system utilities \\
+Web & 200 & 100\% & Browser-based workflows instantiated through Chrome, Edge, Firefox, and Safari across supported operating systems \\
+\midrule
+Total & 1,200 & 100\% & Cross-platform task collection with one oracle specification per task \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+
+\subsection{Initial State Setup Details}
+\label{app:benchmark_initial_state_setup}
+\textsc{OS-Omni} tasks begin from realistic intermediate states rather than blank applications. Each initializer prepares the files, databases, app profiles, open windows or app views, local account fixtures, local services, and distractor artifacts needed by the task. This design mirrors ordinary computer use, where a user typically resumes work from a partially configured environment, an existing inbox, an open document, a populated calendar, or a mobile app with saved state.
+
+Initial state setup follows the same high-level contract across platforms. First, the runtime is restored or prepared from a clean baseline. Linux and Windows use VM restoration, macOS uses Tart clones, Android uses emulator reset with ADB-controlled seeding, and iOS uses prepared Simulator state. Second, task-specific artifacts are placed into the environment, such as documents, spreadsheets, images, notes, packet captures, contact entries, or shopping records. Third, optional setup actions open the target application or navigate to a stable starting view. These setup operations are part of the benchmark specification and are completed before the first agent observation, regardless of the observation mode used in the run.
+
+\subsection{Evaluation Configuration Details}
+\label{app:benchmark_evaluation_configuration}
+\textsc{OS-Omni} evaluates task completion from the final application state rather than from the action trajectory. After the agent stops or reaches the step limit, the runner dynamically loads the evaluator named in the task file, builds a platform-specific evaluation context, and records the returned \texttt{PASS}, \texttt{FAIL}, \texttt{UNDETERMINED}, or \texttt{ERROR} result together with diagnostic metadata. This design is important for open-ended GUI tasks: there are often many valid ways to complete the same instruction, but the completed environment should contain the requested user-visible result.
+
+\paragraph{Evaluator interface.}
+Each evaluator is a Python class loaded from an import path such as \texttt{evaluators.linux.quickshop:QuickShopApiEvaluator}. All evaluators implement the shared \texttt{BaseEvaluator} interface and return an \texttt{EvalResult} containing a status, an optional message, and an open metadata dictionary. The context always includes the task parameters, the runtime controller, and the final observation. Desktop runners additionally pass the run directory and trajectory path when available, so evaluators can save retrieved artifacts or inspect episode logs. Windows also supports supplemental file and PowerShell checks that run after the primary evaluator passes.
+
+\paragraph{Execution limits.}
+The released task specifications use a long-horizon interaction budget: each primary task sets \texttt{limits.max\_steps: 100} and \texttt{limits.step\_timeout\_seconds: 120}. The step timeout is a per-step execution budget rather than a whole-episode wall-clock limit; it bounds the model/action turn and prevents a hung action or tool call from blocking the run indefinitely. The evaluator is invoked after the agent emits \texttt{DONE} or \texttt{FAIL}, after the episode reaches the 100-step budget, or after another terminal runtime condition. If \texttt{step\_timeout\_seconds} is omitted, the shared task loader falls back to 120 seconds, matching the released task convention.
+
+\paragraph{Evaluation pipeline.}
+Most evaluators follow a three-stage pipeline. First, a getter retrieves task-relevant evidence from the final environment: a saved file, application database, profile folder, local service response, UI tree, simulator container, or device storage path. Second, the evaluator normalizes this evidence into structured records, such as workbook cells, document paragraphs, diagram labels, email messages, calendar events, shopping cart items, budget transactions, or browser bookmarks. Third, task-specific predicates compare the structured record against the specification in the YAML file. Failures therefore produce concrete mismatch messages and metadata, such as missing rows, unexpected files, unmatched events, observed cart contents, copied artifacts, command output, or parsed database rows.
+
+\begin{table}[ht]
+\centering
+\caption{Representative final-state signals used by \textsc{OS-Omni} evaluators.}
+\label{tab:evaluation_signal_types}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{3.1cm}p{5.0cm}p{4.1cm}}
+\toprule
+Signal & Access path & Examples \\
+\midrule
+Office/text artifacts & Guest file retrieval; host-side parsers & XLSX, DOCX, PPTX, plain text \\
+\midrule
+App stores and profiles & SQLite, JSON, XML, plist, profile files & mail, calendar, finance, Zotero \\
+\midrule
+Controlled services & Local API or localStorage & QuickShop session, cart, order \\
+\midrule
+Creative/analysis files & Project parsing and app scripts & GIMP, Blender, draw.io, Wireshark \\
+\midrule
+Mobile state & ADB, device storage, simulator containers, UI state & notes, contacts, Safari, reminders \\
+\midrule
+Cross-application state & Child evaluators plus transfer artifacts & attachments and follow-ups \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Ubuntu/Linux}
+\paragraph{LibreOffice.}
+Calc, Writer, and Impress tasks are evaluated from the saved workbook, document, or presentation rather than from the clicks used to edit it. The evaluator first resolves the result file: if the path is already available on the host it is read directly, otherwise it is fetched from the guest with \texttt{controller.get\_file}. Spreadsheet checks use workbook-level parsers to compare cells, formulas, sheets, sheet order, and rule-based properties such as filtered ranges or derived tables. Writer and Impress checks parse document and presentation artifacts to verify text, tables, page breaks, slide contents, and transitions. The metadata records the resolved actual and expected paths and the specific mismatch when comparison fails.
+
+\paragraph{Thunderbird and Delta Chat.}
+Thunderbird evaluation uses both profile-level evidence and final UI evidence. Some tasks read files from the Thunderbird profile, such as preference files, filter definitions, or SQLite-backed state; others run post-processing commands, cache command output, or inspect the final accessibility tree when a compose window should remain open rather than send a message. The checker supports list, CSV, JSON, SQLite, preference, filter, and accessibility-tree rules. Delta Chat tasks inspect persisted conversation state through local database queries and task-specific message predicates, including sent messages, replies, and group or coordination state.
+
+\paragraph{Actual Budget and QuickShop.}
+Actual Budget tasks are evaluated by reading the application's local budget store and SQLite database. The checker searches for accounts, starting-balance transactions, categories, budget amounts, ordinary transactions, and transfer pairs while allowing the internal money representation used by the app. QuickShop tasks query the controlled local shopping app through its local API. The evaluator checks session state, cart item counts, product identifiers, quantities, selected specifications, order totals, address labels, payment options, and order notes. Because QuickShop is benchmark-controlled, these checks avoid real purchases, payment data, and external service drift.
+
+\paragraph{Blender, GIMP, draw.io, Marble, Wireshark, Zotero, Notepadqq, VS Code, and Spotube.}
+Creative, analytical, reference, development, and media tasks use application-specific evidence. Blender evaluators run guest-side scripts to extract scene properties and compare object placement, render settings, and camera or lighting requirements. GIMP evaluators retrieve exported images and inspect dimensions, mode, and pixel-level differences with image-processing libraries. draw.io evaluators decode the saved diagram XML, including compressed diagram payloads, then compare pages and cell labels. Marble tasks parse bookmark or configuration state. Wireshark tasks verify exported captures or protocol reports. Zotero checks query the local library database for collections, items, tags, creators, and notes. Notepadqq and VS Code tasks compare edited workspace files or settings JSON. Spotube tasks inspect persistent profile, market, queue, and playback-related state.
+
+\subsubsection{Windows}
+\paragraph{LibreOffice.}
+Calc, Writer, and Impress tasks are evaluated from saved files and structured document properties. Windows tasks often use checked-in PowerShell scripts that force-save when necessary, retrieve the target file, and run Python checks with libraries such as \texttt{openpyxl}, \texttt{python-docx}, \texttt{python-pptx}, XML parsing, or ZIP inspection. These scripts verify spreadsheet formulas and charts, document formatting and structure, page breaks, images, table-of-contents state, slide shapes, notes, animations, and transitions.
+
+\paragraph{Thunderbird, Calendar, and Delta Chat.}
+Thunderbird and Calendar tasks check saved messages, folders, filters, contacts, and events by combining profile inspection, SQLite queries, and guest-side scripts. Delta Chat tasks verify sent messages, group creation, and shared synchronization artifacts through local database or runtime checks. The Windows runner can also attach supplemental file checks or inline PowerShell checks to the primary evaluator, which is useful for tasks whose success depends on both an app state and an auxiliary artifact.
+
+\paragraph{Actual Budget and QuickShop.}
+Actual Budget tasks use PowerShell-launched Python checks over the application's SQLite state to validate accounts, categories, transactions, and setup details. QuickShop uses the same controlled benchmark application as the Linux lane but queries it from the Windows guest with Python. Its evaluator polls the local API until the state stabilizes, then checks the session, cart, order, and optional UI evidence such as process/window visibility.
+
+\paragraph{Blender, GIMP, draw.io, Wireshark, Zotero, VS Code, Notepad, Spotube, and PowerShell checks.}
+These tasks are evaluated through saved project files, exported artifacts, packet captures, library metadata, source files, plain-text files, persistent application settings, or command-level evidence. Several Windows evaluators are thin wrappers over named PowerShell scripts in \texttt{evaluators/windows/checks}. The script output and exit code become structured metadata, and selected guest artifacts can be copied into \texttt{evaluation\_artifacts} under the run directory for later inspection.
+
+\subsubsection{macOS}
+\paragraph{LibreOffice.}
+Calc, Writer, and Impress tasks check saved spreadsheet, document, and presentation artifacts retrieved from the Tart guest. The evaluators parse the ZIP/XML structure of LibreOffice-compatible documents to verify cell contents, document paragraphs, title formatting, tables, footer or heading requirements, and slide contents. This avoids depending on the visible final screen, which may not show all required document state.
+
+\paragraph{Thunderbird Email, Thunderbird Calendar, and Delta Chat.}
+Email and calendar tasks inspect saved messages, folders, filters, contacts, and events using guest-side Python scripts and local profile or SQLite state. Delta Chat tasks run guest-side database queries and return JSON summaries of conversations, recipients, and messages. The evaluator then checks exact recipients, subjects, message bodies, and required reply or coordination state.
+
+\paragraph{Actual Budget, QuickShop, and Spotube.}
+Actual Budget tasks scan \texttt{global-store.json}, locate the active \texttt{db.sqlite}, copy sidecar WAL/SHM files when present, and query accounts, categories, budgets, transactions, and transfers. QuickShop tasks check the controlled shopping application's local API or persistent state. Spotube tasks inspect the local SQLite and settings state used by the application to validate profile, market, plugin, queue, and playback-related requirements.
+
+\paragraph{Blender, GIMP, draw.io, Wireshark, Zotero, VSCodium, and TextEdit.}
+These tasks are evaluated from saved scene files, images, diagrams, packet evidence, reference library entries, workspace files, and edited text files. Blender and Wireshark evaluators run guest-side scripts that return JSON payloads. GIMP checks compare exported images with expected image properties or fixtures. draw.io decodes diagram XML and compares page/cell semantics. Zotero copies and queries \texttt{zotero.sqlite} and sidecar files to check collections, item titles, creators, tags, and notes. VSCodium and TextEdit evaluators inspect workspace files, settings, and edited text content.
+
+\subsubsection{Android}
+\paragraph{K-9 Mail and Delta Chat.}
+Mail and chat tasks inspect sent messages, forwarded content, replies, archived state, contacts, and status changes. Evaluators use ADB-backed access to app state, local mail service evidence, or task-specific API records where available. Delta Chat evaluators validate exact outbound messages, forwarded content, search-and-reply behavior, archive state, and created contact state. Cross-application mail tasks additionally verify that information extracted from one app is correctly written or sent in another.
+
+\paragraph{Fossify Calendar, Contacts, and Tasks.org.}
+Scheduling and personal-information tasks check persisted event, contact, reminder, due-date, note, and subtask records. Contacts are validated through Android content-provider or database-style ADB queries. Tasks.org evaluators inspect persisted task fields, due dates, notes, parent tasks, and subtasks while accounting for the device timezone.
+
+\paragraph{Markor, LibreOffice, Material Files, and Fossify Gallery.}
+Note, document, file, and gallery tasks are evaluated through external storage and document artifacts. Generic filesystem evaluators check expected paths, forbidden paths, file/directory types, and exact directory entries on shared storage. Markor and text-file tasks read final note contents. LibreOffice Viewer tasks inspect modified office documents by pulling files from device storage and parsing the document package. Gallery tasks check renamed, moved, or deleted photo artifacts while preserving distractor files.
+
+\paragraph{Oinkoin and QuickShop.}
+Oinkoin tasks pull the app's \texttt{movements.db} through ADB root access, copy it to a temporary host location, and query records for matching title, note, category, sign, amount, and category type. QuickShop Android tasks read the WebView localStorage-backed state through the benchmark store helper. They poll until the state stabilizes and then check login status, cart size, required or forbidden cart items, latest order contents, address/payment choices, and order notes.
+
+\paragraph{Spotube, Calculator, Clock, and Settings.}
+Media and utility tasks check persistent app or device state. Spotube evaluators inspect XML/shared-preference or database state for profile, queue, playback, and search outcomes. Calculator and Clock tasks use UI-tree, screenshot-difference, activity, or device-state evidence when the final state is primarily visible rather than stored in a file. Settings tasks use ADB-readable device state, such as Bluetooth status.
+
+\paragraph{Cross application Android tasks.}
+Android also includes workflows combining Fossify Calendar with QuickShop, K-9 Mail with Markor or LibreOffice, and Fossify Calendar or Organic Maps with Delta Chat. These evaluators compose the relevant child checks and report child metadata separately, so a failure can be attributed to the source app, target app, or transfer step.
+
+\subsubsection{iOS}
+\paragraph{Calendar and Reminders.}
+Calendar tasks are backed by the simulator's Calendar database. Evaluators locate the simulator by UDID when a direct database path is not provided, query \texttt{Calendar.sqlitedb}, normalize times with the configured timezone, and check required or forbidden event summaries, start/end times, locations, and notes. Reminders tasks combine visible UI evidence with app state: they check the foreground bundle, the selected list view, expected titles, forbidden titles, and exact-list constraints when the task requires a particular visible reminder list.
+
+\paragraph{Contacts, Delta Chat, and Maily.}
+Contacts tasks inspect \texttt{AddressBook.sqlitedb} from the simulator container and validate saved names, phone numbers, and related fields. Delta Chat and Maily tasks evaluate sent messages, forwarded content, deleted or retained messages, recipients, subjects, and message bodies, using local app state and controlled mail/message service evidence rather than the final screenshot alone.
+
+\paragraph{FSNotes, Flow, and Habit.}
+FSNotes tasks inspect the note root inside the simulator data container to verify created, moved, renamed, archived, or edited Markdown notes. Flow tasks inspect the app support directory and ObjectBox-backed state for expenses, transfers, income records, and budget updates. Habit tasks inspect the local habit database for created, removed, or modified routines. These evaluators poll briefly and include observed summaries in metadata to reduce false negatives from asynchronous app persistence.
+
+\paragraph{QuickShop and Safari.}
+QuickShop iOS tasks use the same controlled shopping-state abstraction as Android, but resolve the local store from the simulator container or explicit database path. They check login state, cart contents, forbidden items, latest order state, and checkout details. Safari tasks query simulator history, bookmarks, folders, tabs, active-tab state, and optional foreground-bundle evidence, so they can distinguish opening the target page from merely typing a URL into a visible field.
+
+\subsubsection{Web}
+\paragraph{Browser and controlled-service tasks.}
+Web tasks are instantiated through Chrome, Edge, Firefox, and Safari on supported operating systems. Evaluators inspect the browser-visible final state and, when applicable, the state of benchmark-controlled services. The checked evidence includes sessions, form submissions, shopping carts, orders, bookmarks, tabs, history entries, downloads, and local storage or database records. Service-backed workflows keep state under benchmark control so that final-state checks do not depend on live commercial services, personal accounts, or unstable remote data.
+
+\subsubsection{Cross-Application and Cross-Platform Workflows}
+Cross-application tasks combine the app-level checks above when a user goal spans multiple applications on the same endpoint, such as Writer with Thunderbird, Thunderbird Calendar with QuickShop, K-9 Mail with Markor or LibreOffice, Calendar with QuickShop, or Calendar, Maps, and Delta Chat. The cross-app evaluator does not reward an intermediate handoff by itself; it checks the final state of every required destination artifact or application record. Cross-platform tasks execute source and target stages on different endpoints, including Android-to-Windows and Windows-to-Linux transfer workflows. The source phase must produce a transfer object, the host-mediated runtime moves it, and the target evaluator checks that the object was consumed correctly in the final task state. When a deterministic checker cannot represent all acceptable outcomes, the case is routed to the manual verification protocol described in Section~\ref{app:manual_verification_for_ambiguous_cases}.
+
+\subsection{More Task Examples}
+\label{app:more_task_examples}
+\hypertarget{app:case_figure_list}{}
+Additional task examples from the screenshot-only setting are provided at the end of the appendix. They include Ubuntu/Linux examples in Figures~\ref{fig:linux_task_examples_1}--\ref{fig:linux_task_examples_6}, Windows examples in Figures~\ref{fig:windows_task_examples_1}--\ref{fig:windows_task_examples_8}, macOS examples in Figures~\ref{fig:macos_task_examples_1}--\ref{fig:macos_task_examples_6}, Android examples in Figures~\ref{fig:android_task_examples_1}--\ref{fig:android_task_examples_2}, and iOS examples in Figures~\ref{fig:ios_task_examples_1}--\ref{fig:ios_task_examples_2}. Each example summarizes the related applications, task instruction, screenshots, and abilities needed to complete the task.
+
+\subsection{Manual Verification for Ambiguous Cases}
+\label{app:manual_verification_for_ambiguous_cases}
+Manual verification is reserved for cases where a deterministic evaluator cannot fully capture acceptable user intent. It is not used to repair ordinary model failures. Reviewers inspect the saved instruction, screenshots, action trace, final artifacts, and evaluator diagnostics. Each manual override records the accepted final state and the reason the automatic check was insufficient.
+
