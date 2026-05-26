@@ -1,4 +1,5 @@
 *.zip
+_NeurIPS_2026__OS_Omni/
 __pycache__/
 *.py[cod]
 .DS_Store
